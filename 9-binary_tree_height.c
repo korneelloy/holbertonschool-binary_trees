@@ -1,19 +1,23 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_size - size of binary tree
- * @tree: pointer to tree
+ * binary_tree_height_side - calculates height of branch
+ * @node: pointer to tree
  *
- * Return: size
+ * Return: size / height
  */
 
-size_t binary_tree_size(const binary_tree_t *tree)
+
+size_t binary_tree_height_side(const binary_tree_t *node)
 {
-	if (tree == NULL)
+	if (node == NULL)
 		return (0);
 
-	return (1 + binary_tree_size(tree->left) + binary_tree_size(tree->right));
+	if (node->left != NULL)
+		return (1 + binary_tree_height_side(node->left));
+	return (1 + binary_tree_height_side(node->right));
 }
+
 
 
 /**
@@ -25,13 +29,17 @@ size_t binary_tree_size(const binary_tree_t *tree)
 
 size_t binary_tree_height(const binary_tree_t *tree)
 {
-	size_t left_branch = binary_tree_size(tree->left);
-	size_t right_branch = binary_tree_size(tree->right);
+	size_t left;
+	size_t right;
 
-	if (tree == NULL)
+	if (tree == NULL || (tree->left == NULL && tree->right == NULL))
 		return (0);
 
-	if (left_branch > right_branch)
-		return (left_branch);
-	return (right_branch);
+	left = binary_tree_height_side(tree->left);
+	right = binary_tree_height_side(tree->right);
+
+	if (left > right)
+		return (left);
+
+	return (right);
 }
